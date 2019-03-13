@@ -7,10 +7,18 @@ function initCheckBirthday() {
 }
 
 function checkBirthday(birthday) {
-    // код для задачи №1 писать здесь
+    let now = Date.now();
+	let thisBirthday = Date.parse(birthday);
+
+	let diff = now - thisBirthday;
+
+	let milSek = 31557600000;
+	let age = parseInt(diff/milSek);
+
+    return (age > 18);
 }
 
-function initPrintAnimalSound() {
+/*function initPrintAnimalSound() {
     const animal = {
         sound: 'grrrr',
     };
@@ -36,4 +44,4 @@ function initCalculateStatement() {
 
 function getAverageMark(marks) {
     // код для задачи №3 писать здесь
-}
+}*/
