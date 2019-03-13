@@ -18,7 +18,7 @@ function checkBirthday(birthday) {
     return (age > 18);
 }
 
-/*function initPrintAnimalSound() {
+function initPrintAnimalSound() {
     const animal = {
         sound: 'grrrr',
     };
@@ -30,6 +30,12 @@ function checkBirthday(birthday) {
 
 function getAnimalSound(animal) {
     // код для задачи №2 писать здесь
+    let sound = animal.sound;
+    if (animal = undefined) {
+    	return null;
+    } else {
+    	return sound;
+    }
 }
 
 function initCalculateStatement() {
@@ -44,4 +50,4 @@ function initCalculateStatement() {
 
 function getAverageMark(marks) {
     // код для задачи №3 писать здесь
-}*/
+}
