@@ -1,3 +1,4 @@
+//task1
 function initCheckBirthday() {
     const birthday = document.getElementById('birthday').value;
 
@@ -7,17 +8,15 @@ function initCheckBirthday() {
 }
 
 function checkBirthday(birthday) {
-    let now = Date.now();
-	let thisBirthday = Date.parse(birthday);
-
-	let diff = now - thisBirthday;
-
-	let milSek = 31557600000;
-	let age = parseInt(diff/milSek);
-
-    return (age > 18);
-}
-
+    let now = +new Date();
+    let b_day = +new Date(birthday);
+    let diff = now - b_day;
+    let age = diff/31536000000
+    return age > 18
+    }
+    checkBirthday('2000-12-03')
+    
+//task2
 function initPrintAnimalSound() {
     const animal = {
         sound: 'grrrr',
@@ -38,6 +37,7 @@ function getAnimalSound(animal) {
     }
 }
 
+//task3
 function initCalculateStatement() {
     for (let idx = 0; idx < 3; idx++) {
         const marks = document.getElementById('learner-' + idx).value.split(',');
@@ -50,4 +50,14 @@ function initCalculateStatement() {
 
 function getAverageMark(marks) {
     // код для задачи №3 писать здесь
+    function getAverageMark(marks) {
+        let total = 0;
+        for (i = 0; i < marks.length; i++) {
+          total += marks[i];
+      }
+      let roundedAverage = Math.round(total / marks.length);
+      return roundedAverage;
+    
+    }
+      getAverageMark([4, 5, 6, 5, 4])
 }
