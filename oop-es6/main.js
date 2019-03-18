@@ -310,31 +310,48 @@ tryAttack( enemy ) {
     return 0;
   } else if( distanceToEnemy == 0) {
     enemy.moveRight(1);
-    enemy.takeAttack(damage*2)
+    enemy.takeAttack(this.attack*2);
 
   } else {
     this.weapon.takeDamage(10 * this.getLuck());
-    enemy.takeAttack(this.getDamage(distance))
+    enemy.takeAttack(this.getDamage(distanceToEnemy))
   }
 }
 
-/*chooseEnemy( players = [] ){
-  let enemy;
-  let enemyArr;
-  for(let i = 0, i < players.length, i++ ){
-    if(players[i].name !== this.name) {
-      enemy = players[i]
+chooseEnemy( players = [] ){
+  let lowesthealthplayer = "unknown" ; 
+  let lowesthealth = Infinity ;
+  for( let i = 0; i < players.length; i++ ){
+      let player = players[i]
+    if(player.name !== this.name) {
+      if(player.life < lowesthealth ){
+          lowesthealth = player.life
+          lowesthealthplayer = player.name
+      }
     }
   }
-  enemyArr.push(enemy);
-  
-
-}*/
+  return lowesthealthplayer
+  }
 
 moveToEnemy( enemy ) {
-  this.move(enemy.position - this.position)
+  let distance = Math.abs(enemy.position - this.position);
+  if (enemy.posistion > this.position) {
+    this.moveRight(distance);
+  } 
+  if (enemy.posistion < this.position) {
+    this.moveLeft(distance);
+  } 
 }
 
+turn( players ) {
+  this.chooseEnemy(players);
+  this.moveToEnemy(enemy);
+  this.tryAttack(enemy); 
+}
+
+play (players) {
+
+}
 }  
 
 class Warrior extends Player {
@@ -536,12 +553,26 @@ gh.moveRight(2)
 console.log(gh.position)
 
 let player1 = new Player({
-  name: 'Anders'
+  name: 'Игрок 1',
+  position: 0
 })
 let player2 = new Player({
-  name: 'katya'
+  name: 'Игрок 2',
+  position: 0
 })
 let player3 = new Player({
-  name: 'egor'
+  name: 'Игрок 3'
 })
-player1.takeDamage(10)  
+player1.takeDamage(10)
+
+
+let livePlayers = [player1, player2, player3]
+
+console.log(player2.chooseEnemy(livePlayers))
+console.log(player2.life)
+player1.tryAttack(player2)
+console.log(player2.life)
+player1.tryAttack(player2)
+console.log(player2.life)
+player1.tryAttack(player2)
+console.log(player2.life)
