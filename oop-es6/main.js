@@ -7,7 +7,7 @@ class StudentLog {
   }
 
   getName() {
-    return `Имя ученика: ${this.name}`
+    return this.name
     }
   
 	addGrade( grade, subject ) {
@@ -19,7 +19,7 @@ class StudentLog {
             }else {
                 this.subjects[subject] = [grade];
             }
-			return `Количество оценок по предмету: ${subject} ${this.subjects[subject].length}`;
+			return this.subjects[subject].length;
 		}
 	};
 
@@ -32,7 +32,7 @@ class StudentLog {
             }
             average = gradeSum/this.subjects[subject].length;
         }
-    return `Средняя оценка по предмету ${subject}: ${average}`;        
+    return average;        
     }
   getTotalAverage() {
   if(this.subjects.length === 0) {
@@ -48,17 +48,15 @@ class StudentLog {
 			}
 		}
 		
-		return `Средняя оценка по всем предметам: ${summ/length}`;
+		return summ/length;
+    return average
 	};
   getGradesBySubject( subject ) {
-    if(this.subjects[subject] !== 'undefined'){
-     return `Оценки по предмету ${subject}: ${this.subjects[subject]}`;
-    } else {
-      return []
-    }
+   
+    return this.subjects[subject] || []
   }
   getGrades() {
-      return `Оценки по предметам: ${this.subjects}`
+      return this.subjects
   }
 }
 let log = new StudentLog('katya');
@@ -76,7 +74,7 @@ console.log(log.getGrades())
 //task2, 3
 class Weapon {
   constructor(weaponObj = {
-      name: 'unnamed',
+      name: 'undefined',
       attack: 0,
       durability: 0,
       range: 0
@@ -97,20 +95,17 @@ class Weapon {
   getDamage() {
   if (this.durability >= this.startDurability * 0.3) {
     return this.attack;
-  } else {
-    if (this.durability == 0) {
+  } else if (this.durability == 0) {
       return 0;
-    } else {
+  } else {
       return this.attack / 2;
-    }
+    
   }
 }
 
   isBroken() {
-      if (this.durability == 0) {
-          return true;
-      }
-
+      return this.durability == 0;
+    
   }
 }
 
@@ -208,8 +203,6 @@ constructor({name, position}){
   this.luck = 10;
   this.description = 'Игрок';
   this.weapon = new Arm;
-  this.weaponClass2 = new Knife;
-  this.weaponClass3 = new Arm;
   this.name = name;
   this.position = position;
 }
@@ -239,9 +232,7 @@ takeDamage( damage ) {
 }
 
 isDead() {
-  if( this.life == 0) {
-    return true;
-  }
+  return (this.life == 0);
 }
 
 
@@ -268,27 +259,18 @@ move( distance ) {
 }
 
 isAttackBlocked() {
-  if (this.getLuck() > ( 100 - this.luck ) / 100){
-    return true;
-  } else{
-    return false;
-  }
+  return (this.getLuck() > (100 - this.luck)/100)
 }
 
 dodged() {
-  if (this.getLuck() > (100 - this.agility - this.speed * 3) / 100) {
-    return true;
-  } else{ 
-    return false;
-  }
+  return (this.getLuck() > (100 - this.agility - this.speed * 3) / 100)
 }
 
 takeAttack( damage ) {
-  if (this.isAttackBlocked()) {
-    this.weapon.takeDamage(damage)
-  }
-  if(this.dodged()) {
-    damage = 0
+  if(this.isAttackBlocked()) {
+    this.weapon.takeDamage(damage);
+  } else if(this.dodged()) {
+    console.log('Урон не защитывается');
   } else {
     this.life = this.life - damage;
   }
@@ -296,12 +278,11 @@ takeAttack( damage ) {
 
 checkWeapon() {
   if(this.weapon.isBroken()) {
-    this.weapon = this.weaponClass2;
-    if (this.weaponClass2.isBroken()) {
-      this.weapon = this.weaponClass3
+    if(this.weapon.name === 'Нож') this.weapon = new Arm();
+    else {
+      this.weapon = new Knife();
     }
-  }
-  
+  }     
 }
 
 tryAttack( enemy ) {
@@ -310,7 +291,7 @@ tryAttack( enemy ) {
     return 0;
   } else if( distanceToEnemy == 0) {
     enemy.moveRight(1);
-    enemy.takeAttack(this.attack*2);
+    enemy.takeAttack(attack * 2)
 
   } else {
     this.weapon.takeDamage(10 * this.getLuck());
@@ -319,18 +300,18 @@ tryAttack( enemy ) {
 }
 
 chooseEnemy( players = [] ){
-  let lowesthealthplayer = "unknown" ; 
-  let lowesthealth = Infinity ;
+  let lowestHealthPlayer = "undefined" ; 
+  let lowestHealth = Infinity ;
   for( let i = 0; i < players.length; i++ ){
       let player = players[i]
     if(player.name !== this.name) {
-      if(player.life < lowesthealth ){
-          lowesthealth = player.life
-          lowesthealthplayer = player.name
+      if(player.life < lowestHealth ){
+          lowestHealth = player.life
+          lowestHealthPlayer = player
       }
     }
   }
-  return lowesthealthplayer
+  return lowestHealthPlayer
   }
 
 moveToEnemy( enemy ) {
@@ -344,14 +325,11 @@ moveToEnemy( enemy ) {
 }
 
 turn( players ) {
-  this.chooseEnemy(players);
+  let enemy = this.chooseEnemy(players);
   this.moveToEnemy(enemy);
   this.tryAttack(enemy); 
 }
 
-play (players) {
-
-}
 }  
 
 class Warrior extends Player {
@@ -391,7 +369,7 @@ constructor ({name, position}) {
   this.attack = 5;
   this.agility = 10;
   this.description = 'Лучник';
-  this.weapon = new Bow;
+  this.weapon = new Bow();
 
 }
 
@@ -409,7 +387,7 @@ constructor ({name, position}) {
   this.attack = 5;
   this.agility = 8;
   this.description = 'Маг';
-  this.weapon = new Staff;
+  this.weapon = new Staff();
   this.magicStart = this.magic;
 
 }
@@ -434,7 +412,7 @@ constructor ({name, position}) {
   this.attack = 15;
   this.luck = 20;
   this.description = 'Гном';
-  this.weapon = new Axe;
+  this.weapon = new Axe();
   this.damageCounter = 0;
 
 }
@@ -460,7 +438,7 @@ constructor ({name, position}) {
   this.agility = 20;
   this.luck = 15;
   this.description = 'Арбалетчик';
-  this.weapon = new LongBow;
+  this.weapon = new LongBow();
 
 }
 }
@@ -473,27 +451,41 @@ constructor ({name, position}) {
   this.attack = 6;
   this.luck = 12;
   this.description = 'Демиург';
-  this.weapon = new StormStaff;
+  this.weapon = new StormStaff();
 
 }
 
-getDamage() {
-  if (this.magic > 0 && getLuck() > 0.6) {
-    damage = damage * 1.5
-  }
-  if (damage > this.life) {
-    this.life = 0
+getDamage(distance) {
+  if (distance <= this.weapon.range) {
+    if (this.magic > 0 && this.getLuck() > 0.6) {
+      return 1.5 * (this.attack + this.weapon.getDamage())*this.getLuck() / distance;
+    } else {
+      return  (this.attack + this.weapon.getDamage())*this.getLuck() / distance;
+    }
   } else {
-    this.life = this.life - damage
+    return 0;
   }
 }
 }
 
-
+function play(players) {
+for (let i = 0; i < length; i++) {
+  players[i].turn(players);
+  }
+for (let i = 0; i < length; i++) {
+  if (players[i].isDead()) {
+    players[i] = null;
+  }
+}  
+if (players.length == 1) {
+  console.log('Winner:' + players[i])
+  return players[i];
+}
+}
 
 
 let weapon = new Weapon({
-  name: 'kjhk',
+  name: 'weapon',
   attack: 20,
   durability: 10,
   range: 1
@@ -553,15 +545,13 @@ gh.moveRight(2)
 console.log(gh.position)
 
 let player1 = new Player({
-  name: 'Игрок 1',
-  position: 0
+  name: 'игрок 1'
 })
 let player2 = new Player({
-  name: 'Игрок 2',
-  position: 0
+  name: 'игрок 2'
 })
 let player3 = new Player({
-  name: 'Игрок 3'
+  name: 'игрок 3'
 })
 player1.takeDamage(10)
 
@@ -569,10 +559,6 @@ player1.takeDamage(10)
 let livePlayers = [player1, player2, player3]
 
 console.log(player2.chooseEnemy(livePlayers))
-console.log(player2.life)
-player1.tryAttack(player2)
-console.log(player2.life)
-player1.tryAttack(player2)
 console.log(player2.life)
 player1.tryAttack(player2)
 console.log(player2.life)
